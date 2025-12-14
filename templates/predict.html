@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Predict Anemia Risk</title>
+  </head>
+  <body>
+    <h2>Enter Lifestyle Details</h2>
+
+    <form action="/predict" method="POST">
+      Age:
+      <input type="number" name="age" required /><br /><br />
+
+      Gender:
+      <select name="gender">
+        <option value="0">Male</option>
+        <option value="1">Female</option></select
+      ><br /><br />
+
+      Diet Type:
+      <select name="diet">
+        <option value="0">Vegetarian</option>
+        <option value="1">Non-Vegetarian</option></select
+      ><br /><br />
+
+      Iron Intake:
+      <select name="iron">
+        <option value="0">Low</option>
+        <option value="1">Medium</option>
+        <option value="2">High</option></select
+      ><br /><br />
+
+      Sleep Hours:
+      <input type="number" name="sleep" required /><br /><br />
+
+      Physical Activity:
+      <select name="activity">
+        <option value="0">Low</option>
+        <option value="1">Medium</option>
+        <option value="2">High</option></select
+      ><br /><br />
+
+      BMI:
+      <input type="number" step="0.1" name="bmi" required /><br /><br />
+
+      Menstrual History:
+      <select name="menstrual">
+        <option value="0">No</option>
+        <option value="1">Yes</option></select
+      ><br /><br />
+
+      Fatigue:
+      <select name="fatigue">
+        <option value="0">No</option>
+        <option value="1">Yes</option></select
+      ><br /><br />
+
+      <button type="submit">Predict Anemia Risk</button>
+    </form>
+  </body>
+</html>

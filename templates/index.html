@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Anemia Risk Prediction</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2>Anemia Risk Prediction</h2>
+      <form action="/predict" method="post">
+        <div class="mb-3">
+          <label>Age:</label>
+          <input type="number" name="age" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label>Gender:</label>
+          <select name="gender" class="form-control">
+            <option value="0">Female</option>
+            <option value="1">Male</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Diet:</label>
+          <select name="diet" class="form-control">
+            <option value="0">Poor</option>
+            <option value="1">Average</option>
+            <option value="2">Good</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Activity:</label>
+          <select name="activity" class="form-control">
+            <option value="0">Low</option>
+            <option value="1">Medium</option>
+            <option value="2">High</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Menstrual Cycle:</label>
+          <select name="menstrual_cycle" class="form-control">
+            <option value="0">Regular</option>
+            <option value="1">Irregular</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Iron Intake:</label>
+          <select name="iron_intake" class="form-control">
+            <option value="0">Low</option>
+            <option value="1">Medium</option>
+            <option value="2">High</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Sleep Duration:</label>
+          <select name="sleep_duration" class="form-control">
+            <option value="0">Short &lt;6h</option>
+            <option value="1">Normal 6-8h</option>
+            <option value="2">Long &gt;8h</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>BMI:</label>
+          <select name="bmi" class="form-control">
+            <option value="0">Underweight</option>
+            <option value="1">Normal</option>
+            <option value="2">Overweight</option>
+            <option value="3">Obese</option>
+          </select>
+        </div>
+        <hr />
+        <h5>Symptoms (Check if Yes):</h5>
+        {% for symptom in
+        ['pale_skin','cold_hands_legs','weakness','dizziness','short_breath','brittle_nails','sore_tongue','pica','hair_loss','poor_concentration']
+        %}
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="{{ symptom }}"
+            value="1"
+          />
+          <label class="form-check-label"
+            >{{ symptom.replace("_"," ").capitalize() }}</label
+          >
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary mt-3">Predict</button>
+      </form>
+    </div>
+  </body>
+</html>

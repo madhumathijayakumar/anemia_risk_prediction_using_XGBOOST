@@ -1,15 +1,16 @@
 from flask import Flask, render_template, request
 import numpy as np
-import pickle
 import shap
 import os
+import xgboost as xgb
 
 app = Flask(__name__)
 
 # Load Model and Explainer
 # Ensure your pkl file contains an XGBoost model for consistency with your thesis
-with open("anemia_model_extended.pkl", "rb") as f:
-    model = pickle.load(f)
+model = xgb.XGBClassifier()
+model.load_model("model_xgb.json")
+
 explainer = shap.TreeExplainer(model)
 
 # Feature 4: XGBoost as the Proposed/Primary Model

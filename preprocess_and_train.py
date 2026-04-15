@@ -18,6 +18,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # Train XGBoost
 model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
 model.fit(X_train, y_train)
+model.save_model("model_xgb.json")
 
 # Evaluate
 y_pred = model.predict(X_test)

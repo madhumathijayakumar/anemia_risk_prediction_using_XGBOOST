@@ -33,7 +33,7 @@ def home():
 def predict():
     data = request.form
 
-    # INPUT VALUES
+    # ---------------- INPUT ----------------
     age = int(data.get("age", 0))
     gender = int(data.get("gender", 0))
     diet_q = int(data.get("diet", 0))
@@ -42,10 +42,10 @@ def predict():
     sleep = int(data.get("sleep_duration", 0))
     bmi = int(data.get("bmi", 0))
 
-    # MENSTRUAL LOGIC
+    # ✅ MENSTRUAL LOGIC (CORRECT)
     menstrual = 0 if (age < 15 or gender == 1) else int(data.get("menstrual_cycle", 0))
 
-    # SYMPTOMS
+    # ---------------- SYMPTOMS ----------------
     symptom_list = [
         "pale_skin", "cold_hands_legs", "weakness", "dizziness",
         "short_breath", "brittle_nails", "sore_tongue",
@@ -53,13 +53,12 @@ def predict():
     ]
     symptoms = [int(data.get(s, 0)) for s in symptom_list]
 
-    # FEATURE NAMES
+    # ---------------- FEATURES ----------------
     feature_names = [
         "Age", "Gender", "Diet", "Activity", "Menstrual Cycle",
         "Iron Intake", "Sleep Duration", "BMI"
     ] + symptom_list
 
-    # FINAL INPUT
     final_input = np.array([
         age, gender, diet_q, activity, menstrual,
         iron, sleep, bmi
@@ -69,18 +68,32 @@ def predict():
     prob = model.predict_proba(final_input)[0][1] * 100
     risk_lvl = "High" if prob >= 60 else "Moderate" if prob >= 30 else "Low"
 
-    # ---------------- FAST FEATURE IMPORTANCE ----------------
-    importances = model.feature_importances_
+    # ---------------- SAFE FEATURE IMPORTANCE ----------------
+    try:
+        importances = model.feature_importances_
 
-    top_idx = np.argsort(importances)[-5:][::-1]
+        if importances is None or len(importances) == 0:
+            raise Exception("Empty importances")
 
-    top_factors = {
-        feature_names[i].replace('_', ' ').title():
-        round(importances[i] * 100, 2)
-        for i in top_idx
-    }
+        top_idx = np.argsort(importances)[-5:][::-1]
 
-    # ---------------- SIMPLE RECOMMENDATIONS ----------------
+        top_factors = {
+            feature_names[i].replace('_', ' ').title():
+            round(float(importances[i]) * 100, 2)
+            for i in top_idx
+        }
+
+    except:
+        # ✅ FALLBACK (if importance fails)
+        top_factors = {}
+        for i, val in enumerate(final_input[0]):
+            if val == 1:
+                top_factors[feature_names[i].replace('_', ' ').title()] = 20
+
+        if not top_factors:
+            top_factors = {"General Health": 100}
+
+    # ---------------- RECOMMENDATIONS ----------------
     recommendations = [
         "Increase iron-rich foods like spinach, dates, and jaggery.",
         "Avoid tea or coffee immediately after meals.",

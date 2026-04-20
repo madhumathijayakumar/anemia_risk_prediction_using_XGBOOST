@@ -6,7 +6,7 @@ import xgboost as xgb
 app = Flask(__name__)
 
 # ---------------- LOAD MODEL ----------------
-model = xgb.XGBClassifier()
+model = xgb.Booster()
 model.load_model("model_xgb.json")
 
 # ---------------- MODEL METRICS ----------------
@@ -65,7 +65,8 @@ def predict():
     ] + symptoms).reshape(1, -1)
 
     # ---------------- PREDICTION ----------------
-    prob = model.predict_proba(final_input)[0][1] * 100
+    dtest = xgb.DMatrix(final_input)
+    prob = model.predict(dtest)[0] * 100
     risk_lvl = "High" if prob >= 60 else "Moderate" if prob >= 30 else "Low"
 
     # ---------------- SAFE FEATURE IMPORTANCE ----------------
